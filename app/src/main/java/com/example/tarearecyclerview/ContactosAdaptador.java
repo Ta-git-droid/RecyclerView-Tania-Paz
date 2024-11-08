@@ -13,31 +13,39 @@ import java.util.ArrayList;
 
 public class ContactosAdaptador extends RecyclerView.Adapter <ContactosAdaptador.ModeloViewHolder> {
 
-    private final ArrayList <Contactos> listaContactos;
+    final ArrayList <Contactos> listaContactos;
+    private final OnItemClickListener onItemClickListener;
 
-    public ContactosAdaptador(ArrayList<Contactos> listaContactos) {
+    // Interfaz para manejar el evento de clic
+    public interface OnItemClickListener {
+        void onItemClick(Contactos contacto, int position);
+    }
+
+    public ContactosAdaptador(ArrayList<Contactos> listaContactos, OnItemClickListener onItemClickListener) {
         this.listaContactos = listaContactos;
+        this.onItemClickListener = onItemClickListener;
     }
 
     // Vista de la subclase y conexión con los views
     @NonNull
     @Override
-    public ContactosAdaptador.ModeloViewHolder onCreateViewHolder(@NonNull ViewGroup parent , int viewType) {
-        // Inflar la vista
-        View itemView = LayoutInflater.from ( parent.getContext ()).inflate ( R.layout.mostrar_contactos , parent, false );
+    public ModeloViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.mostrar_contactos, parent, false);
         return new ModeloViewHolder(itemView);
     }
 
     // Asocia los datos de los elementos de la colección a cada una de las vistas del ViewHolder.
     @Override
-    public void onBindViewHolder(@NonNull ContactosAdaptador.ModeloViewHolder holder , int position) {
-        // Obtener el modelo de contacto en la posición dada
+    public void onBindViewHolder(@NonNull ModeloViewHolder holder, int position) {
         Contactos contacto = listaContactos.get(position);
-        holder.nombre.setText(contacto.getNombre ());
-        holder.apellidos.setText(contacto.getApellidos ());
-        holder.email.setText(contacto.getEmail ());
-        holder.telefono.setText(contacto.getTelefono ());
-        holder.foto.setImageResource(contacto.getFoto ());
+        holder.nombre.setText(contacto.getNombre());
+        holder.apellidos.setText(contacto.getApellidos());
+        holder.email.setText(contacto.getEmail());
+        holder.telefono.setText(contacto.getTelefono());
+        holder.foto.setImageResource(contacto.getFoto());
+
+        // Propagar el evento de clic con el contacto
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(contacto, position));
     }
 
     // Devuelve la cantidad de elementos
@@ -53,13 +61,14 @@ public class ContactosAdaptador extends RecyclerView.Adapter <ContactosAdaptador
         private final TextView email;
         private final TextView telefono;
         private final ImageView foto;
+
         public ModeloViewHolder(View itemView) {
-            super (itemView);
-            nombre = itemView.findViewById ( R.id.nombre );
-            apellidos = itemView.findViewById ( R.id.apellidos );
-            email = itemView.findViewById ( R.id.email );
-            telefono = itemView.findViewById ( R.id.telefono);
-            foto = itemView.findViewById ( R.id.imagen );
+            super(itemView);
+            nombre = itemView.findViewById(R.id.nombre);
+            apellidos = itemView.findViewById(R.id.apellidos);
+            email = itemView.findViewById(R.id.email);
+            telefono = itemView.findViewById(R.id.telefono);
+            foto = itemView.findViewById(R.id.imagen);
         }
     }
 }
