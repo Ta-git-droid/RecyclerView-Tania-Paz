@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TareaRecyclerView</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="correo">Correo</string>
+    <string name="foto_de_contacto">Foto de contacto</string>
+    <string name="nombre">Nombre</string>
+    <string name="tel_fono">Teléfono</string>
+</resources>
